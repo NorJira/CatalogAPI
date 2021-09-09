@@ -69,7 +69,7 @@ namespace Catalog.Controllers
       };
 
       await repository.CreateItemAsync(item);
-
+      // return with location and status 201
       return CreatedAtAction(nameof(GetItemAsync), new { id = item.Id }, item.AsDto());
     }
 
