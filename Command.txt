@@ -1,0 +1,12 @@
+// command.txt
+// 
+// add MongoDb Client package
+%> dotnet add package MongoDB.Driver 
+
+// pull mongodb image and create in docker container with volume to persist data
+%> docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db mongo
+
+// show docker container running
+%> docker ps 
+
+// 
