@@ -45,10 +45,15 @@ namespace Catalog
             services.AddSingleton<IItemsRepository, MongoDbItemsRepository>();
             
             //services.AddControllers();
-            services.AddControllers().AddJsonOptions( options => 
-            {
-                options.JsonSerializerOptions.WriteIndented = true;
-            });
+            // services.AddControllers().AddJsonOptions( options => 
+            // {
+            //     options.JsonSerializerOptions.WriteIndented = true;
+            // });
+            services.AddControllers( options => 
+                options.SuppressAsyncSuffixInActionNames = false
+            ).AddJsonOptions( options =>
+                options.JsonSerializerOptions.WriteIndented = true
+            );
 
             services.AddSwaggerGen(c =>
             {

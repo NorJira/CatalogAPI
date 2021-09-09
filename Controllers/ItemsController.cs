@@ -44,7 +44,7 @@ namespace Catalog.Controllers
 
     // GET /items/{id}
     [HttpGet("{id}")]
-    [ActionName(nameof(GetItemAsync))]
+    // [ActionName(nameof(GetItemAsync))]
     public async Task<ActionResult<ItemDto>> GetItemAsync(Guid id)
     {
       var item = await repository.GetItemAsync(id);
