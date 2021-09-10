@@ -2,22 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Catalog.Entities;
+using Catalog.Settings;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
+// using Catalog.Settings;
 
 namespace Catalog.Repositories
 {
   public class MongoDbItemsRepository : IItemsRepository
   {
-    private const string databaseName = "catalog";
-    private const string collectionName = "items";
+    // private const string databaseName = "catalog";
+    // private const string collectionName = "items";
     private readonly IMongoCollection<Item> itemsCollection;
     private readonly FilterDefinitionBuilder<Item> filterBuilder = Builders<Item>.Filter;
 
-    public MongoDbItemsRepository(IMongoClient mongoClient)
+    public MongoDbItemsRepository(IMongoClient mongoClient, IConfiguration Configuration)
     {
-      IMongoDatabase database = mongoClient.GetDatabase(databaseName);
-      itemsCollection = database.GetCollection<Item>(collectionName);
+      var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+      var dbName = settings.DbName;
+      var dbCollection = settings.DbCollection;
+
+      IMongoDatabase database = mongoClient.GetDatabase(dbName);
+      itemsCollection = database.GetCollection<Item>(dbCollection);
+
+      // IMongoDatabase database = mongoClient.GetDatabase(databaseName);
+      // itemsCollection = database.GetCollection<Item>(collectionName);
     }
 
     public async Task CreateItemAsync(Item item)
