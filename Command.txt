@@ -23,3 +23,49 @@
 // remove docker volume
 %> docker volume rm mongo 
 
+// ADD docker file to workspace
+// must add docker extionsions first 
+command.pallette -> docker:add docker file to workspace 
+                -> .NET: ASP.NET Core 
+                -> Linux 
+                -> 80    <- http port only (443 = https , 80, 443) 
+                ->
+
+// docker build image file 
+%> docker build -t catalog:v1 .
+
+// create docker network 
+%> docker network create net5tutorial 
+
+// see docker network 
+%> docker network ls 
+
+// run mongo container under network 
+%> docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=pass#word1 --network=net5tutorial mongo
+
+// see docker images in local pc 
+%> docker images 
+
+// run aspnet container 
+%> docker run -it --rm -p 8080:80 -e MongoDbSettings:Host=mongo -e MongoDbSettings:Password=pass#word1 --network=net5tutorial catalog:v1 
+
+// login to docker hub 
+%> docker login 
+
+// upload catalog image 
+%> docker tag catalog:v1 norjira/catalog:v1 
+%> docker images 
+%> docker push norjira/catalog:v1 
+
+// to pull catalog image back to local 
+%> docker images 
+%> docker rmi norjira/catalog:v1 
+%> docker rmi catalog:v1 
+%> docker logout 
+
+// now pull as public 
+%> docker run -it --rm -p 8080:80 -e MongoDbSettings:Host=mongo -e MongoDbSettings:Password=pass#word1 --network=net5tutorial norjira/catalog:v1 
+
+// 
+
+
