@@ -7,10 +7,12 @@
 
 %> dotnet user-secrets set MongoDbSettings:Password pass#word1 
 
+%> dotnet add package AspNetCore.HealthChecks.MongoDb 
+
 // pull mongodb image and create in docker container with volume to persist data
 %> docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db mongo
 // OR
-%> docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=pass#word1 mongo dock
+%> docker run -d --rm --name mongo -p 27017:27017 -v mongodbdata:/data/db -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=pass#word1 mongo
 
 // show docker container running
 %> docker ps 
