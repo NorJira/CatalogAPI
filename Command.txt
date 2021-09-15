@@ -66,6 +66,47 @@ command.pallette -> docker:add docker file to workspace
 // now pull as public 
 %> docker run -it --rm -p 8080:80 -e MongoDbSettings:Host=mongo -e MongoDbSettings:Password=pass#word1 --network=net5tutorial norjira/catalog:v1 
 
-// 
+// Kubenetes
+%> kubectl config current-context 
 
+// create secret 
+%> kubectl create secret generic catalog-secrets --from-literal=mongodb-password=pass#word1 
 
+// deploy catalog.yaml 
+%> cd ./kubernetes/
+%> kubectl apply -f ./catalog.yaml 
+
+// show deployment & pods 
+%> kubectl get deployment 
+%> kubectl get pods 
+
+// check ready 
+%> kubectl logs catalog-deployment-7b5fb49458-659fs 
+
+// create mongo services 
+%> cd ./kubernetes/
+%> kubectl apply -f ./mongodb.yaml 
+
+// show mongo 
+%> kubectl get statefulsets
+
+// show pods after both done 
+%> kubectl get pods 
+
+// watch pods actions 
+%> kubectl get pods -w 
+
+// delete pod 
+%> kubectl delete pod catalog-deployment-7b5fb49458-659fs 
+
+// scale deployment pods 
+%> kubectl scale deployments/catalog-deployment --replicas=3 
+
+// if modify program , must rebuild image 
+%> docker build -t norjira/catalog:v2 . 
+%> docker login 
+%> docker push norjira/catalog:v2
+
+// then inform kubernetes by modify catalog.yaml to v2
+%> cd ./kubernetes/
+%> kubectl apply -f ./catalog.yaml 
